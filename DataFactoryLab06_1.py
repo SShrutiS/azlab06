@@ -51,14 +51,14 @@ def main():
     adf_client = DataFactoryManagementClient(credentials, subscription_id)
 
     rg_params = {'location':'westus'}
-    df_params = {'location':'westus'}
+    df_params = {'location':'eastus'}
 
 # create the resource group
     # comment out if the resource group already exits
     #resource_client.resource_groups.create_or_update(rg_name, rg_params)
 
     #Create a data factory
-    df_resource = Factory(location='westus')
+    df_resource = Factory(location='eastus')
     df = adf_client.factories.create_or_update(rg_name, df_name, df_resource)
     print_item(df)
     while df.provisioning_state != 'Succeeded':
