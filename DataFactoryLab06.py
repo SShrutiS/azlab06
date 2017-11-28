@@ -54,7 +54,7 @@ def main():
     rg_name = 'sshResourceGroup'
 
 # The data factory name. It must be globally unique.
-    df_name = 'SSDF'
+    df_name = 'sshDF'
 
 # Specify your Active Directory client ID, client secret, and tenant ID
     credentials = ServicePrincipalCredentials(client_id='276d4d10-d006-48e0-a360-572267e5d400', secret='aphJTM107vbXsrJLC9Ehsk9S2pLxysvGycWnxVE4pjc=', tenant='da67ef1b-ca59-4db2-9a8c-aa8d94617a16')
@@ -91,7 +91,7 @@ def main():
     print_item(ls) 
     
 # Create an Azure blob dataset (input)
-    ds_name = 'ds_in'
+    ds_name = 'dset_in'
     ds_ls = LinkedServiceReference(ls_name)
     blob_path= 'playerscontainer/myteam'
     blob_filename = 'astroplayers.txt'
@@ -100,14 +100,14 @@ def main():
     print_item(ds)
     
 # Create an Azure blob dataset (output)
-    dsOut_name = 'ds_out'
+    dsOut_name = 'dset_out'
     output_blobpath = 'playerscontainer/output'
     dsOut_azure_blob = AzureBlobDataset(ds_ls, folder_path=output_blobpath)
     dsOut = adf_client.datasets.create_or_update(rg_name, df_name, dsOut_name, dsOut_azure_blob)
     print_item(dsOut)
     
 # Create a copy activity
-    act_name =  'copyBlobtoBlob'
+    act_name =  'copyBlobPleayerstoBlob'
     blob_source = BlobSource()
     blob_sink = BlobSink()
     dsin_ref = DatasetReference(ds_name)
@@ -115,7 +115,7 @@ def main():
     copy_activity = CopyActivity(act_name,inputs=[dsin_ref], outputs=[dsOut_ref], source=blob_source, sink=blob_sink)
 
 # Create a pipeline with the copy activity
-    p_name =  'copyPipeline'
+    p_name =  'copyPipeliness'
     params_for_pipeline = {}
     p_obj = PipelineResource(activities=[copy_activity], parameters=params_for_pipeline)
     p = adf_client.pipelines.create_or_update(rg_name, df_name, p_name, p_obj)
